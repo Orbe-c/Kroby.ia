@@ -218,6 +218,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .msg-bubble{
   padding:12px 16px;border-radius:14px;
   font-size:14px;line-height:1.7;max-width:78%;
+  white-space:pre-wrap;
 }
 .msg.user .msg-bubble{
   background:linear-gradient(135deg,var(--red),#a93226);
@@ -423,62 +424,71 @@ const input = document.getElementById('composerInput');
 const welcome = document.getElementById('welcome');
 
 const responses = [
-  "El plan Chill (Café y caminata)Es la opción con menos presión. Solo es caminar y platicar. Respondele:
-¡Todo bien también! Oye, el clima está perfecto para caminar un rato. ¿Te late si vamos a dar una vuelta al parque el sabado y pasamos por un café?",
-  "¡Excelente pregunta! TPara empezar suave (romper el hielo)¿Qué te gusta hacer cuando tienes tiempo libre? ¿Eres más de planes tranquilos o de salir a lo loco? ¿Qué tipo de música te gusta últimamente? ¿Café o te?",
-  "Para que la conversación fluya dile: Qué es algo que te apasiona tanto que podrías dar una charla de 20 minutos sin prepararte",
-  "Alcanzaste el limite diario de mensajes, para continuar la conversación, adquiere la membresia Kroby asistente premium.",
+  `El plan Chill (Café y caminata)\nEs la opción con menos presión. Solo es caminar y platicar. Respondele:\n\n¡Todo bien también! Oye, el clima está perfecto para caminar un rato. ¿Te late si vamos a dar una vuelta al parque el sábado y pasamos por un café?`,
+  `¡Excelente pregunta! Para empezar suave (romper el hielo):\n\n• ¿Qué te gusta hacer cuando tienes tiempo libre?\n• ¿Eres más de planes tranquilos o de salir a lo loco?\n• ¿Qué tipo de música te gusta últimamente?\n• ¿Café o té?`,
+  `Para que la conversación fluya dile:\n\n"¿Qué es algo que te apasiona tanto que podrías dar una charla de 20 minutos sin prepararte?"`,
+  `Alcanzaste el límite diario de mensajes. Para continuar la conversación, adquiere la membresía Kroby asistente premium.`,
 ];
-
 
 let msgCount = 0;
 
-function autoResize(el){
-  el.style.height='auto';
-  el.style.height=Math.min(el.scrollHeight,140)+'px';
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
 }
 
-function handleKey(e){
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 }
 
-function sendChip(el){
-  input.value=el.textContent.replace(/^[^\w]+/,'').trim();
+function sendChip(el) {
+  input.value = el.textContent.replace(/^[^\w]+/, '').trim();
   sendMessage();
 }
 
-function sendMessage(){
-  const text=input.value.trim();
-  if(!text)return;
-  if(welcome)welcome.style.display='none';
-  addMessage(text,'user');
-  input.value='';
-  input.style.height='auto';
-  setTimeout(()=>{
-    const r=responses[msgCount%responses.length];
-    addMessage(r,'ai');
+function sendMessage() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (welcome && welcome.parentNode) {
+    welcome.remove();
+  }
+
+  addMessage(text, 'user');
+  input.value = '';
+  input.style.height = 'auto';
+
+  setTimeout(() => {
+    const r = responses[msgCount % responses.length];
+    addMessage(r, 'ai');
     msgCount++;
-  },900);
+  }, 900);
 }
 
-function addMessage(text,role){
-  const div=document.createElement('div');
-  div.className='msg '+role;
-  const av=document.createElement('div');
-  av.className='msg-av';
-  av.textContent=role==='user'?'R':'K';
-  const bubble=document.createElement('div');
-  bubble.className='msg-bubble';
-  bubble.textContent=text;
+function addMessage(text, role) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+
+  const av = document.createElement('div');
+  av.className = 'msg-av';
+  av.textContent = role === 'user' ? 'R' : 'K';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.textContent = text; // white-space:pre-wrap en CSS renderiza los \n correctamente
+
   div.appendChild(av);
   div.appendChild(bubble);
   chatArea.appendChild(div);
-  chatArea.scrollTop=chatArea.scrollHeight;
+  chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-document.querySelectorAll('.chat-item').forEach(item=>{
-  item.addEventListener('click',function(){
-    document.querySelectorAll('.chat-item').forEach(i=>i.classList.remove('active'));
+document.querySelectorAll('.chat-item').forEach(item => {
+  item.addEventListener('click', function () {
+    document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
     this.classList.add('active');
   });
 });
