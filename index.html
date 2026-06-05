@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Kroby.IA</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -22,90 +22,154 @@
   --red-light:#e74c3c;
   --green:#27ae60;
   --green-dark:#1e8449;
-  --green-light:#2ecc71;
+  --purple:#7c3aed;
+  --purple-dark:#5b21b6;
+  --purple-light:#a855f7;
+  --pink:#db2777;
+  --pink-dark:#9d174d;
   --font-main:'Sora',sans-serif;
   --font-body:'Inter',sans-serif;
 }
-html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);color:var(--brown-dark)}
+html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);color:var(--brown-dark);overflow:hidden}
 
-/* ── LAYOUT ── */
+/* ══════════ LANDING SELECTOR ══════════ */
+#landing{
+  position:fixed;inset:0;z-index:100;
+  background:var(--beige-50);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:48px;
+  transition:opacity .4s ease, transform .4s ease;
+}
+#landing.hide{opacity:0;pointer-events:none;transform:scale(0.97)}
+
+.landing-logo{display:flex;flex-direction:column;align-items:center;gap:14px}
+.landing-logo-icon{
+  width:72px;height:72px;border-radius:20px;
+  background:var(--beige-100);border:1px solid var(--beige-200);
+  display:flex;align-items:center;justify-content:center;
+}
+.landing-logo-icon span{
+  font-family:var(--font-main);font-size:42px;font-weight:800;
+  background:linear-gradient(135deg,var(--red),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;
+}
+.landing-title{
+  font-family:var(--font-main);font-size:28px;font-weight:700;
+  color:var(--brown-dark);letter-spacing:-0.01em;
+}
+.landing-title em{color:var(--green);font-style:normal}
+.landing-sub{font-size:14px;color:var(--brown-soft);margin-top:-8px;letter-spacing:0.01em}
+
+.selector-cards{display:flex;gap:20px;align-items:stretch}
+
+.sel-card{
+  width:220px;padding:32px 24px;
+  border-radius:20px;border:1.5px solid var(--beige-200);
+  background:#fff;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  text-align:center;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.sel-card::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity .25s;
+}
+.sel-card.male::before{background:linear-gradient(135deg,rgba(192,57,43,0.06),rgba(39,174,96,0.06))}
+.sel-card.female::before{background:linear-gradient(135deg,rgba(124,58,237,0.07),rgba(219,39,119,0.07))}
+.sel-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.sel-card.male:hover{border-color:var(--red)}
+.sel-card.female:hover{border-color:var(--purple)}
+.sel-card:hover::before{opacity:1}
+
+.sel-emoji{
+  width:64px;height:64px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;
+  flex-shrink:0;
+}
+.sel-card.male .sel-emoji{background:linear-gradient(135deg,#fde8e6,#e8f5ee)}
+.sel-card.female .sel-emoji{background:linear-gradient(135deg,#f3e8ff,#fce7f3)}
+
+.sel-label{
+  font-family:var(--font-main);font-size:17px;font-weight:700;
+  color:var(--brown-dark);
+}
+.sel-desc{font-size:12px;color:var(--brown-soft);line-height:1.55}
+.sel-tag{
+  padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;
+  font-family:var(--font-main);letter-spacing:0.04em;
+}
+.sel-card.male .sel-tag{background:#fde8e6;color:var(--red)}
+.sel-card.female .sel-tag{background:#f3e8ff;color:var(--purple)}
+
+/* ══════════ APP SHELL ══════════ */
 .app{display:flex;height:100vh;overflow:hidden}
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sidebar{
   width:260px;min-width:260px;
-  background:var(--brown-dark);
   display:flex;flex-direction:column;
   border-right:1px solid rgba(255,255,255,0.06);
+  transition:background .3s;
 }
+.app.male .sidebar{background:#2c1a0e}
+.app.female .sidebar{background:#1e0a2e}
+
 .sb-header{
   padding:16px 12px 12px;
   display:flex;align-items:center;justify-content:space-between;
   border-bottom:0.5px solid rgba(255,255,255,0.07);
 }
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
 .logo-icon{
   width:34px;height:34px;border-radius:10px;
-  background:var(--beige-100);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
+  background:rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .logo-icon span{
-  font-family:var(--font-main);font-size:19px;font-weight:700;
-  background:linear-gradient(135deg,var(--red),var(--green));
+  font-family:var(--font-main);font-size:19px;font-weight:700;line-height:1;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  line-height:1;
 }
+.app.male .logo-icon span{background:linear-gradient(135deg,var(--red),var(--green))}
+.app.female .logo-icon span{background:linear-gradient(135deg,var(--purple-light),var(--pink))}
 .logo-name{
   font-family:var(--font-main);font-size:15px;font-weight:600;
-  color:var(--beige-100);letter-spacing:0.02em;
+  color:rgba(255,255,255,0.85);letter-spacing:0.02em;
 }
-.logo-name em{color:var(--green);font-style:normal}
+.logo-name em{font-style:normal}
+.app.male .logo-name em{color:var(--green)}
+.app.female .logo-name em{color:var(--purple-light)}
+
+.version-badge{
+  font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;
+  font-family:var(--font-main);letter-spacing:0.05em;margin-left:4px;
+}
+.app.male .version-badge{background:rgba(192,57,43,0.25);color:#f5a899}
+.app.female .version-badge{background:rgba(124,58,237,0.25);color:#c4b5fd}
+
 .icon-btn-sb{
   background:none;border:none;cursor:pointer;
-  color:var(--brown-muted);padding:5px;border-radius:6px;
+  color:rgba(255,255,255,0.35);padding:5px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
   transition:background .15s,color .15s;
 }
-.icon-btn-sb:hover{background:rgba(255,255,255,0.08);color:var(--beige-100)}
+.icon-btn-sb:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8)}
 
 .new-chat-btn{
-  margin:12px 10px 6px;
-  padding:9px 14px;border-radius:9px;
-  border:0.5px solid rgba(212,180,131,0.25);
-  background:rgba(212,180,131,0.07);
-  color:var(--beige-200);font-size:13px;
-  font-family:var(--font-body);
-  cursor:pointer;display:flex;align-items:center;gap:9px;
+  margin:12px 10px 6px;padding:9px 14px;border-radius:9px;
+  background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.65);font-size:13px;
+  font-family:var(--font-body);cursor:pointer;
+  display:flex;align-items:center;gap:9px;
+  border:0.5px solid rgba(255,255,255,0.1);
   transition:background .15s;
 }
-.new-chat-btn:hover{background:rgba(212,180,131,0.14);color:var(--beige-100)}
-
-.section-label{
-  padding:10px 14px 3px;
-  font-size:10px;color:#7a5c3e;
-  font-weight:600;letter-spacing:0.07em;text-transform:uppercase;
-  font-family:var(--font-main);
-}
-.chat-list{display:flex;flex-direction:column;gap:1px;padding:0 8px}
-.chat-item{
-  padding:8px 10px;font-size:13px;color:var(--brown-muted);
-  cursor:pointer;border-radius:7px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  transition:background .12s,color .12s;
-  border-left:2px solid transparent;
-}
-.chat-item:hover{background:rgba(212,180,131,0.09);color:var(--beige-200)}
-.chat-item.active{
-  background:rgba(192,57,43,0.15);color:#f5a899;
-  border-left:2px solid var(--red);
-}
+.new-chat-btn:hover{background:rgba(255,255,255,0.11);color:rgba(255,255,255,0.9)}
 
 .sb-spacer{flex:1}
-.sb-footer{
-  padding:10px;
-  border-top:0.5px solid rgba(255,255,255,0.07);
-}
+.sb-footer{padding:10px;border-top:0.5px solid rgba(255,255,255,0.07)}
 .user-row{
   display:flex;align-items:center;gap:10px;
   padding:8px 6px;border-radius:8px;cursor:pointer;
@@ -114,46 +178,56 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .user-row:hover{background:rgba(255,255,255,0.06)}
 .avatar{
   width:32px;height:32px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--red),var(--green-dark));
   display:flex;align-items:center;justify-content:center;
   font-size:13px;font-weight:600;color:#fff;
   font-family:var(--font-main);
 }
-.user-info{flex:1;min-width:0}
-.user-name{font-size:13px;color:var(--beige-200);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-plan{font-size:11px;color:#7a5c3e}
+.app.male .avatar{background:linear-gradient(135deg,var(--red),var(--green-dark))}
+.app.female .avatar{background:linear-gradient(135deg,var(--purple),var(--pink))}
+.user-name{font-size:13px;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-plan{font-size:11px;color:rgba(255,255,255,0.3)}
 
-/* ── MAIN ── */
-.main{flex:1;display:flex;flex-direction:column;background:var(--beige-50);min-width:0}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.app.male .main{background:var(--beige-50)}
+.app.female .main{background:#faf5ff}
 
 .topbar{
   padding:12px 20px;
-  border-bottom:0.5px solid var(--beige-200);
-  background:#fff;
   display:flex;align-items:center;justify-content:space-between;
   flex-shrink:0;
 }
+.app.male .topbar{border-bottom:0.5px solid var(--beige-200);background:#fff}
+.app.female .topbar{border-bottom:0.5px solid #e9d5ff;background:#fdf4ff}
+
 .model-pill{
   display:flex;align-items:center;gap:7px;
   padding:6px 14px;border-radius:20px;
-  border:0.5px solid var(--beige-200);background:#fff;
   cursor:pointer;font-size:13px;font-weight:500;
-  color:var(--brown-mid);font-family:var(--font-main);
-  transition:background .15s;
+  font-family:var(--font-main);transition:background .15s;
 }
-.model-pill:hover{background:var(--beige-50)}
-.dot-r{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.app.male .model-pill{border:0.5px solid var(--beige-200);background:#fff;color:var(--brown-mid)}
+.app.female .model-pill{border:0.5px solid #e9d5ff;background:#fdf4ff;color:var(--purple-dark)}
+.app.male .model-pill:hover{background:var(--beige-50)}
+.app.female .model-pill:hover{background:#f5e8ff}
+
+.dot-m{width:8px;height:8px;border-radius:50%;background:var(--red)}
 .dot-g{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.dot-p{width:8px;height:8px;border-radius:50%;background:var(--purple-light)}
+.dot-pk{width:8px;height:8px;border-radius:50%;background:var(--pink)}
+
 .topbar-actions{display:flex;gap:7px}
 .icon-btn-top{
   width:34px;height:34px;border-radius:8px;
-  border:0.5px solid var(--beige-200);background:#fff;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
-  color:var(--brown-soft);transition:background .15s;
+  transition:background .15s;
 }
-.icon-btn-top:hover{background:var(--beige-100)}
+.app.male .icon-btn-top{border:0.5px solid var(--beige-200);background:#fff;color:var(--brown-soft)}
+.app.female .icon-btn-top{border:0.5px solid #e9d5ff;background:#fdf4ff;color:var(--purple)}
+.app.male .icon-btn-top:hover{background:var(--beige-100)}
+.app.female .icon-btn-top:hover{background:#ede9fe}
 
-/* ── CHAT AREA ── */
+/* CHAT AREA */
 .chat-area{
   flex:1;overflow-y:auto;
   padding:32px 24px;
@@ -162,7 +236,9 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 }
 .chat-area::-webkit-scrollbar{width:5px}
 .chat-area::-webkit-scrollbar-track{background:transparent}
-.chat-area::-webkit-scrollbar-thumb{background:var(--beige-200);border-radius:3px}
+.chat-area::-webkit-scrollbar-thumb{border-radius:3px}
+.app.male .chat-area::-webkit-scrollbar-thumb{background:var(--beige-200)}
+.app.female .chat-area::-webkit-scrollbar-thumb{background:#ddd6fe}
 
 /* Welcome */
 .welcome{
@@ -171,34 +247,39 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 }
 .welcome-icon{
   width:60px;height:60px;border-radius:18px;
-  background:var(--beige-100);border:1px solid var(--beige-200);
   display:flex;align-items:center;justify-content:center;
 }
+.app.male .welcome-icon{background:var(--beige-100);border:1px solid var(--beige-200)}
+.app.female .welcome-icon{background:#f3e8ff;border:1px solid #e9d5ff}
 .welcome-icon span{
-  font-family:var(--font-main);font-size:34px;font-weight:800;
-  background:linear-gradient(135deg,var(--red),var(--green));
+  font-family:var(--font-main);font-size:34px;font-weight:800;line-height:1;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  line-height:1;
 }
+.app.male .welcome-icon span{background:linear-gradient(135deg,var(--red),var(--green))}
+.app.female .welcome-icon span{background:linear-gradient(135deg,var(--purple-light),var(--pink))}
 .welcome h1{
   font-family:var(--font-main);font-size:22px;font-weight:600;
-  color:var(--brown-dark);text-align:center;
+  text-align:center;
 }
+.app.male .welcome h1{color:var(--brown-dark)}
+.app.female .welcome h1{color:var(--purple-dark)}
 .welcome p{
-  font-size:14px;color:var(--brown-soft);
-  text-align:center;max-width:320px;line-height:1.65;
+  font-size:14px;text-align:center;max-width:320px;line-height:1.65;
 }
-.chips{
-  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;
-}
+.app.male .welcome p{color:var(--brown-soft)}
+.app.female .welcome p{color:#6d28d9}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .chip{
   padding:7px 15px;border-radius:20px;
-  border:0.5px solid var(--beige-200);background:#fff;
-  font-size:12px;color:var(--brown-mid);cursor:pointer;
+  font-size:12px;cursor:pointer;
   transition:border-color .15s,color .15s,background .15s;
   font-family:var(--font-body);
 }
-.chip:hover{border-color:var(--red);color:var(--red);background:#fff5f4}
+.app.male .chip{border:0.5px solid var(--beige-200);background:#fff;color:var(--brown-mid)}
+.app.female .chip{border:0.5px solid #e9d5ff;background:#fdf4ff;color:var(--purple-dark)}
+.app.male .chip:hover{border-color:var(--red);color:var(--red);background:#fff5f4}
+.app.female .chip:hover{border-color:var(--purple);color:var(--purple);background:#f5f0ff}
 
 /* Messages */
 .msg{display:flex;gap:10px;align-items:flex-start}
@@ -208,184 +289,233 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   display:flex;align-items:center;justify-content:center;
   font-size:13px;font-weight:700;font-family:var(--font-main);
 }
-.msg.user .msg-av{
-  background:linear-gradient(135deg,var(--red),#a93226);color:#fff;
-}
+.msg.user .msg-av{color:#fff}
+.app.male .msg.user .msg-av{background:linear-gradient(135deg,var(--red),#a93226)}
+.app.female .msg.user .msg-av{background:linear-gradient(135deg,var(--purple),var(--pink))}
 .msg.ai .msg-av{
-  background:var(--beige-100);border:0.5px solid var(--beige-200);
-  color:var(--green-dark);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;font-family:var(--font-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
+.app.male .msg.ai .msg-av{
+  background:var(--beige-100);border:0.5px solid var(--beige-200);
+}
+.app.male .msg.ai .msg-av span{
+  background:linear-gradient(135deg,var(--red),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.app.female .msg.ai .msg-av{
+  background:#f3e8ff;border:0.5px solid #e9d5ff;
+}
+.app.female .msg.ai .msg-av span{
+  background:linear-gradient(135deg,var(--purple-light),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
 .msg-bubble{
   padding:12px 16px;border-radius:14px;
   font-size:14px;line-height:1.7;max-width:78%;
   white-space:pre-wrap;
 }
-.msg.user .msg-bubble{
+.app.male .msg.user .msg-bubble{
   background:linear-gradient(135deg,var(--red),#a93226);
   color:#fff;border-bottom-right-radius:3px;
 }
+.app.female .msg.user .msg-bubble{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;border-bottom-right-radius:3px;
+}
 .msg.ai .msg-bubble{
-  background:#fff;color:var(--brown-dark);
-  border:0.5px solid var(--beige-200);
-  border-bottom-left-radius:3px;
+  background:#fff;border-bottom-left-radius:3px;
   box-shadow:0 1px 4px rgba(0,0,0,0.04);
 }
-.msg.ai .msg-bubble strong{color:var(--green-dark)}
-.tag{
-  display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;
-  font-weight:600;background:#e8f8ef;color:var(--green-dark);
-  margin:0 2px;font-family:var(--font-main);
-}
+.app.male .msg.ai .msg-bubble{color:var(--brown-dark);border:0.5px solid var(--beige-200)}
+.app.female .msg.ai .msg-bubble{color:var(--purple-dark);border:0.5px solid #e9d5ff}
 
-/* ── COMPOSER ── */
+/* Composer */
 .composer-wrap{
-  padding:10px 20px 18px;background:var(--beige-50);flex-shrink:0;
+  padding:10px 20px 18px;flex-shrink:0;
 }
+.app.male .composer-wrap{background:var(--beige-50)}
+.app.female .composer-wrap{background:#faf5ff}
+
 .composer{
-  border:1px solid var(--beige-200);border-radius:16px;
-  background:#fff;padding:12px 14px;
+  border-radius:16px;padding:12px 14px;
   display:flex;flex-direction:column;gap:10px;
   box-shadow:0 2px 8px rgba(0,0,0,0.05);
   transition:border-color .2s,box-shadow .2s;
+  background:#fff;
 }
-.composer:focus-within{
-  border-color:var(--red);
-  box-shadow:0 2px 8px rgba(192,57,43,0.12);
-}
+.app.male .composer{border:1px solid var(--beige-200)}
+.app.female .composer{border:1px solid #e9d5ff}
+.app.male .composer:focus-within{border-color:var(--red);box-shadow:0 2px 8px rgba(192,57,43,0.12)}
+.app.female .composer:focus-within{border-color:var(--purple);box-shadow:0 2px 8px rgba(124,58,237,0.12)}
+
 .composer-input{
   border:none;outline:none;background:none;
   font-size:14px;color:var(--brown-dark);
   resize:none;min-height:40px;max-height:140px;
   line-height:1.55;font-family:var(--font-body);width:100%;
 }
+.app.female .composer-input{color:var(--purple-dark)}
 .composer-input::placeholder{color:#b8a080}
+.app.female .composer-input::placeholder{color:#a78bfa}
+
 .composer-footer{display:flex;align-items:center;justify-content:space-between}
 .composer-tools{display:flex;gap:6px}
 .tool-btn{
   padding:5px 12px;border-radius:8px;
-  border:0.5px solid var(--beige-200);background:none;
-  cursor:pointer;font-size:12px;color:var(--brown-soft);
+  cursor:pointer;font-size:12px;
   display:flex;align-items:center;gap:5px;
-  font-family:var(--font-body);
+  font-family:var(--font-body);background:none;
   transition:background .12s,border-color .12s,color .12s;
 }
-.tool-btn:hover{
-  background:var(--beige-50);color:var(--brown-mid);
-  border-color:var(--beige-300);
-}
+.app.male .tool-btn{border:0.5px solid var(--beige-200);color:var(--brown-soft)}
+.app.female .tool-btn{border:0.5px solid #e9d5ff;color:var(--purple)}
+.app.male .tool-btn:hover{background:var(--beige-50);color:var(--brown-mid);border-color:var(--beige-300)}
+.app.female .tool-btn:hover{background:#f5f0ff;color:var(--purple-dark);border-color:#c4b5fd}
+
 .send-btn{
   width:36px;height:36px;border-radius:10px;
-  background:var(--red);border:none;cursor:pointer;
+  border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  transition:background .15s,transform .1s;
-  flex-shrink:0;
+  transition:background .15s,transform .1s;flex-shrink:0;
 }
-.send-btn:hover{background:var(--red-dark)}
+.app.male .send-btn{background:var(--red)}
+.app.female .send-btn{background:var(--purple)}
+.app.male .send-btn:hover{background:var(--red-dark)}
+.app.female .send-btn:hover{background:var(--purple-dark)}
 .send-btn:active{transform:scale(0.95)}
-.send-btn svg{color:#fff}
-.disclaimer{
-  text-align:center;font-size:11px;color:#b8a080;
-  padding:5px 0 0;line-height:1.5;
-}
 
-/* ── RESPONSIVE ── */
+.disclaimer{
+  text-align:center;font-size:11px;padding:5px 0 0;line-height:1.5;
+}
+.app.male .disclaimer{color:#b8a080}
+.app.female .disclaimer{color:#a78bfa}
+
+/* Back button */
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;cursor:pointer;
+  padding:5px 10px;border-radius:8px;border:none;background:none;
+  font-family:var(--font-body);
+  transition:background .15s;
+  margin-top:2px;
+}
+.app.male .back-btn{color:rgba(255,255,255,0.4)}
+.app.female .back-btn{color:rgba(255,255,255,0.4)}
+.back-btn:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8)!important}
+
+/* Typing indicator */
+.typing{display:flex;gap:5px;align-items:center;padding:14px 16px}
+.typing span{
+  width:7px;height:7px;border-radius:50%;
+  animation:bounce 1.2s infinite;
+}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+.app.male .typing span{background:var(--brown-muted)}
+.app.female .typing span{background:#a78bfa}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
 @media(max-width:640px){
   .sidebar{display:none}
   .chat-area{padding:20px 14px}
   .composer-wrap{padding:8px 12px 14px}
+  .selector-cards{flex-direction:column}
 }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- SIDEBAR -->
+<!-- ══ LANDING ══ -->
+<div id="landing">
+  <div class="landing-logo">
+    <div class="landing-logo-icon"><span>K</span></div>
+    <div class="landing-title">kroby<em>.ia</em></div>
+    <div class="landing-sub">Elige tu versión</div>
+  </div>
+
+  <div class="selector-cards">
+    <!-- HOMBRES -->
+    <div class="sel-card male" onclick="enterChat('male')">
+      <div class="sel-emoji">🤖</div>
+      <div class="sel-label">Kroby Hombres</div>
+      <div class="sel-desc">Consejos, estrategias y respuestas directas para ellos</div>
+      <div class="sel-tag">VERSIÓN MASCULINA</div>
+    </div>
+
+    <!-- CHICAS -->
+    <div class="sel-card female" onclick="enterChat('female')">
+      <div class="sel-emoji">💜</div>
+      <div class="sel-label">Kroby Chicas</div>
+      <div class="sel-desc">Tu espacio inteligente, seguro y empático para ellas</div>
+      <div class="sel-tag">VERSIÓN FEMENINA</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div class="app" id="app" style="display:none">
+
   <aside class="sidebar">
     <div class="sb-header">
-      <a class="logo" href="#">
-        <div class="logo-icon"><span>K</span></div>
+      <a class="logo" onclick="goBack()">
+        <div class="logo-icon"><span id="logoK">K</span></div>
         <span class="logo-name">kroby<em>.ia</em></span>
+        <span class="version-badge" id="vBadge">HOM</span>
       </a>
-      <button class="icon-btn-sb" title="Nuevo chat">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <path d="M12 5v14M5 12h14"/>
-        </svg>
+      <button class="icon-btn-sb" title="Nuevo chat" onclick="resetChat()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
       </button>
     </div>
 
-    <button class="new-chat-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M12 5v14M5 12h14"/>
-      </svg>
+    <button class="new-chat-btn" onclick="resetChat()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
       Nuevo chat
     </button>
 
     <div class="sb-spacer"></div>
 
     <div class="sb-footer">
+      <button class="back-btn" onclick="goBack()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Cambiar versión
+      </button>
       <div class="user-row">
-        <div class="avatar">R</div>
+        <div class="avatar" id="avLetter">R</div>
         <div class="user-info">
           <div class="user-name">ronilio</div>
           <div class="user-plan">Plan gratuito</div>
         </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7a5c3e" stroke-width="2">
-          <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-        </svg>
       </div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="topbar">
-      <div class="model-pill">
-        <div class="dot-r"></div>
-        <div class="dot-g"></div>
-        Kroby IA · GRATUITO
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M6 9l6 6 6-6"/>
-        </svg>
+      <div class="model-pill" id="modelPill">
+        <div class="dot-m" id="dot1"></div>
+        <div class="dot-g" id="dot2"></div>
+        <span id="pillLabel">Kroby Hombres · GRATUITO</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn-top" title="Compartir">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
-          </svg>
+        <button class="icon-btn-top">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
         </button>
-        <button class="icon-btn-top" title="Opciones">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-          </svg>
+        <button class="icon-btn-top">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
         </button>
       </div>
     </div>
 
-    <div class="chat-area" id="chatArea">
+    <div class="chat-area" id="chatArea"></div>
 
-      <!-- Welcome -->
-      <div class="welcome" id="welcome">
-        <div class="welcome-icon"><span>K</span></div>
-        <h1>¿En qué te ayudo hoy?</h1>
-        <p>Soy Kroby IA, tu asistente inteligente para negocios, creatividad y productividad.</p>
-        <div class="chips">
-          <div class="chip" onclick="sendChip(this)">✍️ Redactar contenido</div>
-          <div class="chip" onclick="sendChip(this)">📊 Analizar datos</div>
-          <div class="chip" onclick="sendChip(this)">💡 Ideas de negocio</div>
-          <div class="chip" onclick="sendChip(this)">🌐 Traducir texto</div>
-          <div class="chip" onclick="sendChip(this)">📧 Redactar email</div>
-          <div class="chip" onclick="sendChip(this)">📅 Planificar tareas</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- COMPOSER -->
     <div class="composer-wrap">
       <div class="composer">
         <textarea
-          class="composer-input"
-          id="composerInput"
+          class="composer-input" id="composerInput"
           placeholder="Escribe tu pregunta a Kroby IA..."
           rows="1"
           onkeydown="handleKey(event)"
@@ -394,22 +524,16 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
         <div class="composer-footer">
           <div class="composer-tools">
             <button class="tool-btn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-              </svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               Adjuntar
             </button>
             <button class="tool-btn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-              </svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               Buscar
             </button>
           </div>
-          <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+          <button class="send-btn" onclick="sendMessage()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
       </div>
@@ -419,19 +543,76 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 </div>
 
 <script>
-const chatArea = document.getElementById('chatArea');
-const input = document.getElementById('composerInput');
-const welcome = document.getElementById('welcome');
+const MALE_CHIPS = ['✍️ Redactar contenido','📊 Analizar datos','💡 Ideas de negocio','🌐 Traducir texto','📧 Redactar email','📅 Planificar tareas'];
+const FEMALE_CHIPS = ['💌 Redactar mensaje','✨ Ideas creativas','💬 Consejos relacionales','📚 Recomendar lectura','🎯 Planificar metas','🌸 Bienestar personal'];
 
-// ✅ CORREGIDO: strings con template literals para soportar saltos de línea
-const responses = [
+const MALE_RESPONSES = [
   `El plan Chill (Café y caminata)\nEs la opción con menos presión. Solo es caminar y platicar. Respondele:\n\n¡Todo bien también! Oye, el clima está perfecto para caminar un rato. ¿Te late si vamos a dar una vuelta al parque el sábado y pasamos por un café?`,
   `¡Excelente pregunta! Para empezar suave (romper el hielo):\n\n• ¿Qué te gusta hacer cuando tienes tiempo libre?\n• ¿Eres más de planes tranquilos o de salir a lo loco?\n• ¿Qué tipo de música te gusta últimamente?\n• ¿Café o té?`,
   `Para que la conversación fluya dile:\n\n"¿Qué es algo que te apasiona tanto que podrías dar una charla de 20 minutos sin prepararte?"`,
   `Alcanzaste el límite diario de mensajes. Para continuar la conversación, adquiere la membresía Kroby asistente premium.`,
 ];
 
+const FEMALE_RESPONSES = [
+  `Aquí tienes la respuesta perfecta 💜\n\nSi quieres mantenerlo interesado sin perder tu esencia:\n\n"Que bueno saber de ti 😊 Yo también estaba pensando en ti. ¿Cómo va todo?"`,
+  `Claro que sí, aquí van algunas ideas de autocuidado para hoy:\n\n• Haz 10 minutos de journaling por la mañana\n• Toma agua antes de tu café\n• Pon música que te suba el ánimo\n• Date un mensaje de afirmación frente al espejo ✨`,
+  `Para comunicarte con claridad sin sonar agresiva:\n\n"Me gustaría que habláramos de algo que me tiene pensando. ¿Tienes un momento hoy o mañana?"`,
+  `Alcanzaste el límite diario de mensajes 🌸 Para continuar, adquiere la membresía Kroby Chicas premium.`,
+];
+
+let mode = 'male';
 let msgCount = 0;
+const landing = document.getElementById('landing');
+const appEl = document.getElementById('app');
+const chatArea = document.getElementById('chatArea');
+const input = document.getElementById('composerInput');
+
+function enterChat(m) {
+  mode = m;
+  msgCount = 0;
+  landing.classList.add('hide');
+  setTimeout(() => { landing.style.display = 'none'; }, 420);
+  appEl.style.display = 'flex';
+  appEl.className = 'app ' + m;
+  applyTheme(m);
+  renderWelcome();
+}
+
+function applyTheme(m) {
+  const isFemale = m === 'female';
+  document.getElementById('vBadge').textContent = isFemale ? 'CHICAS' : 'HOM';
+  document.getElementById('pillLabel').textContent = isFemale ? 'Kroby Chicas · GRATUITO' : 'Kroby Hombres · GRATUITO';
+  const dot1 = document.getElementById('dot1');
+  const dot2 = document.getElementById('dot2');
+  dot1.className = isFemale ? 'dot-p' : 'dot-m';
+  dot2.className = isFemale ? 'dot-pk' : 'dot-g';
+}
+
+function renderWelcome() {
+  chatArea.innerHTML = '';
+  const isFemale = mode === 'female';
+  const chips = isFemale ? FEMALE_CHIPS : MALE_CHIPS;
+  const welcome = document.createElement('div');
+  welcome.className = 'welcome';
+  welcome.id = 'welcome';
+  welcome.innerHTML = `
+    <div class="welcome-icon"><span>K</span></div>
+    <h1>${isFemale ? '¿En qué te apoyo hoy? 💜' : '¿En qué te ayudo hoy?'}</h1>
+    <p>${isFemale ? 'Soy Kroby IA, tu espacio seguro para ideas, consejos y todo lo que necesites.' : 'Soy Kroby IA, tu asistente inteligente para negocios, creatividad y productividad.'}</p>
+    <div class="chips">${chips.map(c => `<div class="chip" onclick="sendChip(this)">${c}</div>`).join('')}</div>
+  `;
+  chatArea.appendChild(welcome);
+}
+
+function goBack() {
+  appEl.style.display = 'none';
+  landing.style.display = 'flex';
+  setTimeout(() => landing.classList.remove('hide'), 10);
+  chatArea.innerHTML = '';
+  msgCount = 0;
+}
+
+function resetChat() { msgCount = 0; renderWelcome(); }
 
 function autoResize(el) {
   el.style.height = 'auto';
@@ -439,61 +620,65 @@ function autoResize(el) {
 }
 
 function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
 
 function sendChip(el) {
-  input.value = el.textContent.replace(/^[^\w]+/, '').trim();
+  input.value = el.textContent.replace(/^[\p{Emoji}\s]+/u, '').trim();
   sendMessage();
 }
 
 function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
-
-  // ✅ CORREGIDO: se remueve del DOM en vez de solo ocultar con display:none
-  if (welcome && welcome.parentNode) {
-    welcome.remove();
-  }
-
+  const w = document.getElementById('welcome');
+  if (w) w.remove();
   addMessage(text, 'user');
   input.value = '';
   input.style.height = 'auto';
-
+  const typingEl = addTyping();
   setTimeout(() => {
-    const r = responses[msgCount % responses.length];
-    addMessage(r, 'ai');
+    typingEl.remove();
+    const responses = mode === 'female' ? FEMALE_RESPONSES : MALE_RESPONSES;
+    addMessage(responses[msgCount % responses.length], 'ai');
     msgCount++;
-  }, 900);
+  }, 1100);
 }
 
 function addMessage(text, role) {
   const div = document.createElement('div');
   div.className = 'msg ' + role;
-
   const av = document.createElement('div');
   av.className = 'msg-av';
-  av.textContent = role === 'user' ? 'R' : 'K';
-
+  if (role === 'ai') {
+    av.innerHTML = '<span>K</span>';
+  } else {
+    av.textContent = 'R';
+  }
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
-  bubble.textContent = text; // white-space:pre-wrap en CSS renderiza los \n correctamente
-
+  bubble.textContent = text;
   div.appendChild(av);
   div.appendChild(bubble);
   chatArea.appendChild(div);
   chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-document.querySelectorAll('.chat-item').forEach(item => {
-  item.addEventListener('click', function () {
-    document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
+function addTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  const av = document.createElement('div');
+  av.className = 'msg-av';
+  av.innerHTML = '<span>K</span>';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  div.appendChild(av);
+  div.appendChild(bubble);
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return div;
+}
 </script>
 </body>
 </html>
