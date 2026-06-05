@@ -457,7 +457,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
     <div class="sel-card female" onclick="enterChat('female')">
       <div class="sel-emoji">💜</div>
       <div class="sel-label">Kroby Chicas</div>
-      <div class="sel-desc">Te ayudo a mamar pico</div>
+      <div class="sel-desc">Te ayudo a ligar hombres</div>
       <div class="sel-tag">VERSIÓN FEMENINA</div>
     </div>
   </div>
@@ -663,7 +663,7 @@ function addMessage(text, role) {
   const av = document.createElement('div');
   av.className = 'msg-av';
   if (role === 'ai') {
-  av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby.png'}" alt="Kroby">`;
+  av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
 } else {
   av.textContent = 'R';
 }
