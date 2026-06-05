@@ -437,7 +437,9 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 <!-- ══ LANDING ══ -->
 <div id="landing">
   <div class="landing-logo">
-    <div class="landing-logo-icon"><span>K</span></div>
+    <div class="landing-logo-icon">
+  <img id="landingKroby" src="kroby/kroby.png" alt="Kroby">
+</div>
     <div class="landing-title">kroby<em>.ia</em></div>
     <div class="landing-sub">Elige tu versión</div>
   </div>
@@ -467,7 +469,9 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   <aside class="sidebar">
     <div class="sb-header">
       <a class="logo" onclick="goBack()">
-        <div class="logo-icon"><span id="logoK">K</span></div>
+        <div class="landing-logo-icon">
+  <img id="landingKroby" src="kroby/kroby.png" alt="Kroby">
+</div>
         <span class="logo-name">kroby<em>.ia</em></span>
         <span class="version-badge" id="vBadge">HOM</span>
       </a>
@@ -604,7 +608,7 @@ function renderWelcome() {
   welcome.className = 'welcome';
   welcome.id = 'welcome';
   welcome.innerHTML = `
-    <div class="welcome-icon"><span>K</span></div>
+    <div class="landing-logo-icon"> <img id="landingKroby" src="kroby/kroby.png" alt="Kroby"> </div>
     <h1>${isFemale ? '¿En qué te apoyo hoy? 💜' : '¿En qué te ayudo hoy?'}</h1>
     <p>${isFemale ? 'Soy Kroby IA, tu espacio seguro para ideas, consejos y todo lo que necesites.' : 'Soy Kroby IA, tu asistente inteligente para negocios, creatividad y productividad.'}</p>
     <div class="chips">${chips.map(c => `<div class="chip" onclick="sendChip(this)">${c}</div>`).join('')}</div>
