@@ -494,7 +494,9 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
     <div class="sb-header">
       <a class="logo" onclick="goBack()">
         <div class="landing-logo-icon">
-  <img id="landingKroby" src="kroby/kroby.png" alt="Kroby">
+  <img id="landingKroby"
+     src="${isFemale ? 'kroby/krobyg.png' : 'kroby/kroby.png'}"
+     alt="Kroby">
 </div>
         <span class="logo-name">kroby<em>.ia</em></span>
         <span class="version-badge" id="vBadge">HOM</span>
@@ -614,14 +616,26 @@ function enterChat(m) {
 
 function applyTheme(m) {
   const isFemale = m === 'female';
+
   document.getElementById('vBadge').textContent = isFemale ? 'CHICAS' : 'HOM';
   document.getElementById('pillLabel').textContent = isFemale ? 'Kroby Chicas · GRATUITO' : 'Kroby Hombres · GRATUITO';
+
   const dot1 = document.getElementById('dot1');
   const dot2 = document.getElementById('dot2');
+
   dot1.className = isFemale ? 'dot-p' : 'dot-m';
   dot2.className = isFemale ? 'dot-pk' : 'dot-g';
+
   document.getElementById('userName').textContent =
-  m === 'female' ? 'Diana' : 'Milton';
+    isFemale ? 'Diana' : 'Milton';
+
+  const krobyImg = isFemale
+    ? 'kroby/krobyg.png'
+    : 'kroby/kroby.png';
+
+  document.querySelectorAll('#logoKroby, #landingKroby').forEach(img => {
+    img.src = krobyImg;
+  });
 }
 
 function renderWelcome() {
@@ -632,7 +646,9 @@ function renderWelcome() {
   welcome.className = 'welcome';
   welcome.id = 'welcome';
   welcome.innerHTML = `
-    <div class="landing-logo-icon"> <img id="landingKroby" src="kroby/kroby.png" alt="Kroby"> </div>
+    <div class="landing-logo-icon"> <img id="landingKroby"
+     src="${isFemale ? 'kroby/krobyg.png' : 'kroby/kroby.png'}"
+     alt="Kroby"> </div>
     <h1>${isFemale ? '¿En qué te apoyo hoy? 💜' : '¿En qué te ayudo hoy?'}</h1>
     <p>${isFemale ? 'Soy Kroby IA, tu espacio seguro para ideas, consejos y todo lo que necesites.' : 'Soy Kroby IA, tu asistente inteligente para negocios, creatividad y productividad.'}</p>
     <div class="chips">${chips.map(c => `<div class="chip" onclick="sendChip(this)">${c}</div>`).join('')}</div>
