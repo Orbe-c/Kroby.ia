@@ -705,7 +705,7 @@ function addTyping() {
   div.className = 'msg ai';
   const av = document.createElement('div');
   av.className = 'msg-av';
-  av.innerHTML = '<span>K</span>';
+  av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
   bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
