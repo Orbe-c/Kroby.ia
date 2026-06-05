@@ -485,7 +485,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
       <div class="user-row">
         <div class="avatar" id="avLetter">R</div>
         <div class="user-info">
-          <div class="user-name">Milton</div>
+          <div class="user-name" id="userName">Milton</div>
           <div class="user-plan">Plan gratuito</div>
         </div>
       </div>
@@ -586,6 +586,8 @@ function applyTheme(m) {
   const dot2 = document.getElementById('dot2');
   dot1.className = isFemale ? 'dot-p' : 'dot-m';
   dot2.className = isFemale ? 'dot-pk' : 'dot-g';
+  document.getElementById('userName').textContent =
+  m === 'female' ? 'Valentina' : 'Milton';
 }
 
 function renderWelcome() {
