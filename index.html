@@ -663,7 +663,15 @@ function goBack() {
   msgCount = 0;
 }
 
-function resetChat() { msgCount = 0; renderWelcome(); }
+function resetChat() {
+  msgCount = 0;
+  isSending = false;
+  input.disabled = false;        
+  input.placeholder = 'Escribe tu pregunta a Kroby IA...'; 
+  sendBtn.disabled = false;      
+  sendBtn.style.opacity = '1';   
+  renderWelcome();
+}
 
 /* ── Input ── */
 function autoResize(el) {
@@ -690,9 +698,19 @@ function sendMessage() {
   setTimeout(() => {
     typingEl.remove();
     const responses = mode === 'female' ? FEMALE_RESPONSES : MALE_RESPONSES;
-    addMessage(responses[msgCount % responses.length], 'ai');
-    msgCount++;
-    isSending = false;
+const resp = responses[msgCount % responses.length];
+addMessage(resp, 'ai');
+msgCount++;
+isSending = false;
+
+// Si es el mensaje de límite, bloquear el input
+const esLimite = resp.includes('límite diario');
+if (esLimite) {
+  input.disabled = true;
+  input.placeholder = 'Adquiere la membresía premium para continuar';
+  sendBtn.disabled = true;
+  sendBtn.style.opacity = '0.4';
+}
     chatArea.scrollTop = chatArea.scrollHeight;
   }, 1100);
 }
