@@ -585,6 +585,13 @@ const FEMALE_CHIPS = ['💌 Redactar mensaje','✨ Ideas creativas','💬 Consej
 
 const MALE_RESPONSES = [
   `El plan Chill (Café y caminata)\nEs la opción con menos presión. Solo es caminar y platicar. Respondele:\n\n¡Todo bien también! Oye, el clima está perfecto para caminar un rato. ¿Te late si vamos a dar una vuelta al parque el sábado y pasamos por un café?`,
+  `¿Tenés ya pensado a qué café la querés llevar, o querés que armemos un par de opciones chileras?`,
+  `Tranquilo, respirá! Llegar antes es de caballeros y te da la ventaja de acomodarte bien. No te me vayas a poner ansioso ni a ver el celular cada tres segundos con cara de preocupación.`,
+  `Aquí tenés las 4 reglas de oro para que todo fluya:\n
+Escuchá más de lo que hablás: Hacé preguntas abiertas, mostrá interés real en sus respuestas y no conviertas la cita en un monólogo sobre vos.\n
+Sé el del plan: Llevá un lugar en mente y opciones claras. A las cheras les trama que un hombre tenga iniciativa y no ande con el "¿y ahora para dónde vamos?".\n
+Cero celular: Guardalo en el bolsillo. Estar viendo la pantalla cada cinco minutos mata cualquier conversación y transmite desinterés.\n
+Relajate y sé auténtico: No intentés interpretar un personaje ni impresionar de más. La confianza se nota cuando estás cómodo`,
   `¡Excelente pregunta! Para empezar suave (romper el hielo):\n\n• ¿Qué te gusta hacer cuando tienes tiempo libre?\n• ¿Eres más de planes tranquilos o de salir a lo loco?\n• ¿Qué tipo de música te gusta últimamente?\n• ¿Café o té?`,
   `Para que la conversación fluya dile:\n\n"¿Qué es algo que te apasiona tanto que podrías dar una charla de 20 minutos sin prepararte?"`,
   `Alcanzaste el límite diario de mensajes. Para continuar la conversación, adquiere la membresía Kroby asistente premium.`,
@@ -618,8 +625,8 @@ function enterChat(m) {
 function applyTheme(m) {
   const isFemale = m === 'female';
 
-  document.getElementById('vBadge').textContent = isFemale ? 'CHICAS' : 'HOM';
-  document.getElementById('pillLabel').textContent = isFemale ? 'Kroby Chicas · GRATUITO' : 'Kroby Hombres · GRATUITO';
+  document.getElementById('vBadge').textContent = isFemale ? 'CHICAS' : 'CHICOS';
+  document.getElementById('pillLabel').textContent = isFemale ? 'Kroby Chicas · GRATUITO' : 'Kroby Chicos · GRATUITO';
 
   const dot1 = document.getElementById('dot1');
   const dot2 = document.getElementById('dot2');
