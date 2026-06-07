@@ -638,7 +638,7 @@ function applyTheme(m) {
   document.querySelectorAll('#logoKroby, #landingKroby').forEach(img => {
     img.src = krobyImg;
   });
-  document.getElementById('avLetter').src = isFemale ? 'RUTA_DIANA' : 'RUTA_MILTON';
+  document.getElementById('avLetter').src = isFemale ? 'fotoperfil/Diana.jpeg' : 'fotoperfil/Milton.jpeg';
 }
 
 function renderWelcome() {
@@ -708,7 +708,7 @@ function addMessage(text, role) {
   if (role === 'ai') {
   av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
 } else {
-  av.innerHTML = `<img src="${mode === 'female' ? 'RUTA_DIANA' : 'RUTA_MILTON'}" alt="Usuario" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  av.innerHTML = `<img src="${mode === 'female' ? 'fotoperfil/Diana.jpeg' : 'fotoperfil/Milton.jpeg'}" alt="Usuario" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
 }
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
