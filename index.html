@@ -2,11 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"/>
 <title>Kroby.IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --beige-50:#fdf8f0;
   --beige-100:#f5ead6;
@@ -30,7 +30,17 @@
   --font-main:'Sora',sans-serif;
   --font-body:'Inter',sans-serif;
 }
-html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);color:var(--brown-dark);overflow:hidden}
+
+html{height:100%;height:-webkit-fill-available}
+body{
+  height:100%;height:-webkit-fill-available;
+  font-family:var(--font-body);
+  background:var(--beige-50);
+  color:var(--brown-dark);
+  overflow:hidden;
+  /* Prevent bounce scroll on iOS */
+  position:fixed;width:100%;
+}
 
 /* ══════════ LANDING SELECTOR ══════════ */
 #landing{
@@ -40,6 +50,8 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   align-items:center;justify-content:center;
   gap:48px;
   transition:opacity .4s ease, transform .4s ease;
+  overflow-y:auto;
+  padding:20px;
 }
 #landing.hide{opacity:0;pointer-events:none;transform:scale(0.97)}
 
@@ -48,12 +60,9 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   width:72px;height:72px;border-radius:20px;
   background:var(--beige-100);border:1px solid var(--beige-200);
   display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
 }
-.landing-logo-icon span{
-  font-family:var(--font-main);font-size:42px;font-weight:800;
-  background:linear-gradient(135deg,var(--red),var(--green));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;
-}
+.landing-logo-icon img{width:80%;height:80%;object-fit:contain}
 .landing-title{
   font-family:var(--font-main);font-size:28px;font-weight:700;
   color:var(--brown-dark);letter-spacing:-0.01em;
@@ -62,12 +71,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .landing-sub{font-size:14px;color:var(--brown-soft);margin-top:-8px;letter-spacing:0.01em}
 
 .selector-cards{display:flex;gap:20px;align-items:stretch}
-
-  .sel-emoji img{
-  width:90%;
-  height:90%;
-  object-fit:contain;
-}
+.sel-emoji img{width:90%;height:90%;object-fit:contain}
 
 .sel-card{
   width:220px;padding:32px 24px;
@@ -77,14 +81,15 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   text-align:center;
   transition:transform .2s,border-color .2s,box-shadow .2s;
   position:relative;overflow:hidden;
+  /* Better touch on mobile */
+  touch-action:manipulation;
+  user-select:none;
 }
-.sel-card::before{
-  content:'';position:absolute;inset:0;opacity:0;
-  transition:opacity .25s;
-}
+.sel-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
 .sel-card.male::before{background:linear-gradient(135deg,rgba(192,57,43,0.06),rgba(39,174,96,0.06))}
 .sel-card.female::before{background:linear-gradient(135deg,rgba(124,58,237,0.07),rgba(219,39,119,0.07))}
 .sel-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.sel-card:active{transform:scale(0.97)}
 .sel-card.male:hover{border-color:var(--red)}
 .sel-card.female:hover{border-color:var(--purple)}
 .sel-card:hover::before{opacity:1}
@@ -92,16 +97,12 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .sel-emoji{
   width:64px;height:64px;border-radius:16px;
   display:flex;align-items:center;justify-content:center;
-  font-size:34px;
-  flex-shrink:0;
+  font-size:34px;flex-shrink:0;
 }
 .sel-card.male .sel-emoji{background:linear-gradient(135deg,#fde8e6,#e8f5ee)}
 .sel-card.female .sel-emoji{background:linear-gradient(135deg,#f3e8ff,#fce7f3)}
 
-.sel-label{
-  font-family:var(--font-main);font-size:17px;font-weight:700;
-  color:var(--brown-dark);
-}
+.sel-label{font-family:var(--font-main);font-size:17px;font-weight:700;color:var(--brown-dark)}
 .sel-desc{font-size:12px;color:var(--brown-soft);line-height:1.55}
 .sel-tag{
   padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;
@@ -111,7 +112,11 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .sel-card.female .sel-tag{background:#f3e8ff;color:var(--purple)}
 
 /* ══════════ APP SHELL ══════════ */
-.app{display:flex;height:100vh;overflow:hidden}
+.app{
+  display:flex;
+  height:100%;height:-webkit-fill-available;
+  overflow:hidden;
+}
 
 /* SIDEBAR */
 .sidebar{
@@ -129,31 +134,13 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   border-bottom:0.5px solid rgba(255,255,255,0.07);
 }
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
-
-  .logo-icon img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:10px;
-}
-
-  .landing-logo-icon img{
-  width:80%;
-  height:80%;
-  object-fit:contain;
-}
-  
+.logo-icon img{width:100%;height:100%;object-fit:cover;border-radius:10px}
 .logo-icon{
   width:34px;height:34px;border-radius:10px;
   background:rgba(255,255,255,0.12);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  overflow:hidden;
 }
-.logo-icon span{
-  font-family:var(--font-main);font-size:19px;font-weight:700;line-height:1;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.app.male .logo-icon span{background:linear-gradient(135deg,var(--red),var(--green))}
-.app.female .logo-icon span{background:linear-gradient(135deg,var(--purple-light),var(--pink))}
 .logo-name{
   font-family:var(--font-main);font-size:15px;font-weight:600;
   color:rgba(255,255,255,0.85);letter-spacing:0.02em;
@@ -174,6 +161,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   color:rgba(255,255,255,0.35);padding:5px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
   transition:background .15s,color .15s;
+  touch-action:manipulation;
 }
 .icon-btn-sb:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8)}
 
@@ -185,6 +173,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   display:flex;align-items:center;gap:9px;
   border:0.5px solid rgba(255,255,255,0.1);
   transition:background .15s;
+  touch-action:manipulation;
 }
 .new-chat-btn:hover{background:rgba(255,255,255,0.11);color:rgba(255,255,255,0.9)}
 
@@ -196,19 +185,16 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   transition:background .12s;
 }
 .user-row:hover{background:rgba(255,255,255,0.06)}
-.avatar{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:600;color:#fff;
-  font-family:var(--font-main);
-}
-.app.male .avatar{background:linear-gradient(135deg,var(--red),var(--green-dark))}
-.app.female .avatar{background:linear-gradient(135deg,var(--purple),var(--pink))}
+.avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover}
 .user-name{font-size:13px;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-plan{font-size:11px;color:rgba(255,255,255,0.3)}
 
 /* MAIN */
-.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.main{
+  flex:1;display:flex;flex-direction:column;min-width:0;
+  /* Critical for iOS keyboard handling */
+  height:100%;overflow:hidden;
+}
 .app.male .main{background:var(--beige-50)}
 .app.female .main{background:#faf5ff}
 
@@ -240,7 +226,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .icon-btn-top{
   width:34px;height:34px;border-radius:8px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:background .15s;
+  transition:background .15s;touch-action:manipulation;border:none;
 }
 .app.male .icon-btn-top{border:0.5px solid var(--beige-200);background:#fff;color:var(--brown-soft)}
 .app.female .icon-btn-top{border:0.5px solid #e9d5ff;background:#fdf4ff;color:var(--purple)}
@@ -253,6 +239,9 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   padding:32px 24px;
   display:flex;flex-direction:column;gap:20px;
   scroll-behavior:smooth;
+  /* iOS smooth scroll */
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
 }
 .chat-area::-webkit-scrollbar{width:5px}
 .chat-area::-webkit-scrollbar-track{background:transparent}
@@ -265,36 +254,19 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   display:flex;flex-direction:column;align-items:center;
   justify-content:center;flex:1;gap:16px;padding:20px 0 30px;
 }
-.welcome-icon{
-  width:60px;height:60px;border-radius:18px;
-  display:flex;align-items:center;justify-content:center;
-}
-.app.male .welcome-icon{background:var(--beige-100);border:1px solid var(--beige-200)}
-.app.female .welcome-icon{background:#f3e8ff;border:1px solid #e9d5ff}
-.welcome-icon span{
-  font-family:var(--font-main);font-size:34px;font-weight:800;line-height:1;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.app.male .welcome-icon span{background:linear-gradient(135deg,var(--red),var(--green))}
-.app.female .welcome-icon span{background:linear-gradient(135deg,var(--purple-light),var(--pink))}
-.welcome h1{
-  font-family:var(--font-main);font-size:22px;font-weight:600;
-  text-align:center;
-}
+.welcome h1{font-family:var(--font-main);font-size:22px;font-weight:600;text-align:center}
 .app.male .welcome h1{color:var(--brown-dark)}
 .app.female .welcome h1{color:var(--purple-dark)}
-.welcome p{
-  font-size:14px;text-align:center;max-width:320px;line-height:1.65;
-}
+.welcome p{font-size:14px;text-align:center;max-width:320px;line-height:1.65}
 .app.male .welcome p{color:var(--brown-soft)}
 .app.female .welcome p{color:#6d28d9}
 
 .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .chip{
-  padding:7px 15px;border-radius:20px;
-  font-size:12px;cursor:pointer;
+  padding:7px 15px;border-radius:20px;font-size:12px;cursor:pointer;
   transition:border-color .15s,color .15s,background .15s;
-  font-family:var(--font-body);
+  font-family:var(--font-body);touch-action:manipulation;
+  user-select:none;
 }
 .app.male .chip{border:0.5px solid var(--beige-200);background:#fff;color:var(--brown-mid)}
 .app.female .chip{border:0.5px solid #e9d5ff;background:#fdf4ff;color:var(--purple-dark)}
@@ -307,41 +279,14 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .msg-av{
   width:30px;height:30px;border-radius:50%;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;font-family:var(--font-main);
+  overflow:hidden;
 }
-.msg.user .msg-av{color:#fff}
-.app.male .msg.user .msg-av{background:linear-gradient(135deg,var(--red),#a93226)}
-.app.female .msg.user .msg-av{background:linear-gradient(135deg,var(--purple),var(--pink))}
-.msg.ai .msg-av{
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:800;font-family:var(--font-main);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.app.male .msg.ai .msg-av{
-  background:var(--beige-100);border:0.5px solid var(--beige-200);
-}
-.app.male .msg.ai .msg-av span{
-  background:linear-gradient(135deg,var(--red),var(--green));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.app.female .msg.ai .msg-av{
-  background:#f3e8ff;border:0.5px solid #e9d5ff;
-}
-.app.female .msg.ai .msg-av span{
-  background:linear-gradient(135deg,var(--purple-light),var(--pink));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-  .msg-av img{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-}
+.msg-av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 
 .msg-bubble{
   padding:12px 16px;border-radius:14px;
   font-size:14px;line-height:1.7;max-width:78%;
-  white-space:pre-wrap;
+  white-space:pre-wrap;word-break:break-word;
 }
 .app.male .msg.user .msg-bubble{
   background:linear-gradient(135deg,var(--red),#a93226);
@@ -361,6 +306,8 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 /* Composer */
 .composer-wrap{
   padding:10px 20px 18px;flex-shrink:0;
+  /* Stays above keyboard on iOS */
+  position:relative;z-index:10;
 }
 .app.male .composer-wrap{background:var(--beige-50)}
 .app.female .composer-wrap{background:#faf5ff}
@@ -379,9 +326,13 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 
 .composer-input{
   border:none;outline:none;background:none;
-  font-size:14px;color:var(--brown-dark);
-  resize:none;min-height:40px;max-height:140px;
+  font-size:16px; /* 16px prevents iOS zoom on focus */
+  color:var(--brown-dark);
+  resize:none;min-height:40px;max-height:120px;
   line-height:1.55;font-family:var(--font-body);width:100%;
+  /* Prevent iOS quirks */
+  -webkit-appearance:none;
+  appearance:none;
 }
 .app.female .composer-input{color:var(--purple-dark)}
 .composer-input::placeholder{color:#b8a080}
@@ -390,32 +341,34 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 .composer-footer{display:flex;align-items:center;justify-content:space-between}
 .composer-tools{display:flex;gap:6px}
 .tool-btn{
-  padding:5px 12px;border-radius:8px;
-  cursor:pointer;font-size:12px;
+  padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;
   display:flex;align-items:center;gap:5px;
   font-family:var(--font-body);background:none;
   transition:background .12s,border-color .12s,color .12s;
+  touch-action:manipulation;
 }
 .app.male .tool-btn{border:0.5px solid var(--beige-200);color:var(--brown-soft)}
 .app.female .tool-btn{border:0.5px solid #e9d5ff;color:var(--purple)}
-.app.male .tool-btn:hover{background:var(--beige-50);color:var(--brown-mid);border-color:var(--beige-300)}
-.app.female .tool-btn:hover{background:#f5f0ff;color:var(--purple-dark);border-color:#c4b5fd}
 
+/* SEND BUTTON — larger touch target on mobile */
 .send-btn{
-  width:36px;height:36px;border-radius:10px;
+  width:44px;height:44px;border-radius:12px;
   border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   transition:background .15s,transform .1s;flex-shrink:0;
+  touch-action:manipulation;
+  /* Ensure it's always tappable */
+  position:relative;z-index:1;
+  -webkit-appearance:none;
+  appearance:none;
 }
 .app.male .send-btn{background:var(--red)}
 .app.female .send-btn{background:var(--purple)}
 .app.male .send-btn:hover{background:var(--red-dark)}
 .app.female .send-btn:hover{background:var(--purple-dark)}
-.send-btn:active{transform:scale(0.95)}
+.send-btn:active{transform:scale(0.92);opacity:0.85}
 
-.disclaimer{
-  text-align:center;font-size:11px;padding:5px 0 0;line-height:1.5;
-}
+.disclaimer{text-align:center;font-size:11px;padding:5px 0 0;line-height:1.5}
 .app.male .disclaimer{color:#b8a080}
 .app.female .disclaimer{color:#a78bfa}
 
@@ -424,9 +377,8 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
   display:flex;align-items:center;gap:6px;
   font-size:12px;cursor:pointer;
   padding:5px 10px;border-radius:8px;border:none;background:none;
-  font-family:var(--font-body);
-  transition:background .15s;
-  margin-top:2px;
+  font-family:var(--font-body);transition:background .15s;margin-top:2px;
+  touch-action:manipulation;
 }
 .app.male .back-btn{color:rgba(255,255,255,0.4)}
 .app.female .back-btn{color:rgba(255,255,255,0.4)}
@@ -434,21 +386,63 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 
 /* Typing indicator */
 .typing{display:flex;gap:5px;align-items:center;padding:14px 16px}
-.typing span{
-  width:7px;height:7px;border-radius:50%;
-  animation:bounce 1.2s infinite;
-}
+.typing span{width:7px;height:7px;border-radius:50%;animation:bounce 1.2s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
 .typing span:nth-child(3){animation-delay:.4s}
 .app.male .typing span{background:var(--brown-muted)}
 .app.female .typing span{background:#a78bfa}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 
+/* ══════════ MOBILE ══════════ */
 @media(max-width:640px){
   .sidebar{display:none}
-  .chat-area{padding:20px 14px}
-  .composer-wrap{padding:8px 12px 14px}
-  .selector-cards{flex-direction:column}
+
+  /* Mobile topbar with back option */
+  .topbar{padding:10px 14px}
+
+  .chat-area{
+    padding:16px 14px;
+    /* Leave room so last message isn't hidden behind composer */
+    padding-bottom:8px;
+  }
+
+  .composer-wrap{
+    padding:8px 12px 12px;
+    /* Safe area for notch phones */
+    padding-bottom:max(12px, env(safe-area-inset-bottom));
+  }
+
+  .composer{padding:10px 12px;gap:8px}
+
+  /* Bigger touch targets */
+  .chip{padding:8px 16px;font-size:13px}
+
+  .send-btn{width:48px;height:48px;border-radius:14px}
+
+  .tool-btn{padding:6px 10px}
+
+  .selector-cards{flex-direction:column;gap:14px}
+  .sel-card{width:100%;max-width:320px;padding:24px 20px}
+
+  .welcome{padding:10px 0 20px;gap:12px}
+  .welcome h1{font-size:19px}
+
+  .msg-bubble{max-width:88%;font-size:14px}
+
+  /* Mobile back button in topbar */
+  .mobile-back{
+    display:flex;align-items:center;gap:6px;
+    font-size:13px;cursor:pointer;
+    padding:6px 10px;border-radius:8px;border:none;background:none;
+    font-family:var(--font-body);transition:background .15s;
+    touch-action:manipulation;
+  }
+  .app.male .mobile-back{color:var(--brown-soft)}
+  .app.female .mobile-back{color:var(--purple)}
+}
+
+@media(min-width:641px){
+  .mobile-back{display:none}
 }
 </style>
 </head>
@@ -457,30 +451,22 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 <!-- ══ LANDING ══ -->
 <div id="landing">
   <div class="landing-logo">
-  <div class="logo-icon">
-  <img id="logoKroby" src="kroby/kroby.png" alt="Kroby">
-</div>
+    <div class="landing-logo-icon">
+      <img id="logoKroby" src="kroby/kroby.png" alt="Kroby">
+    </div>
     <div class="landing-title">kroby<em>.ia</em></div>
     <div class="landing-sub">Elige tu versión</div>
   </div>
 
   <div class="selector-cards">
-    <!-- HOMBRES -->
-    <div class="sel-card male" onclick="enterChat('male')">
-      <div class="sel-emoji">
-  <img src="kroby/kroby.png">
-</div>
+    <div class="sel-card male" id="btnMale">
+      <div class="sel-emoji"><img src="kroby/kroby.png"></div>
       <div class="sel-label">Kroby Hombres</div>
       <div class="sel-desc">Te ayudo con las nenas</div>
       <div class="sel-tag">VERSIÓN MASCULINA</div>
-    
     </div>
-
-    <!-- CHICAS -->
-    <div class="sel-card female" onclick="enterChat('female')">
-      <div class="sel-emoji">
-  <img src="kroby/krobyg.png">
-</div>
+    <div class="sel-card female" id="btnFemale">
+      <div class="sel-emoji"><img src="kroby/krobyg.png"></div>
       <div class="sel-label">Kroby Chicas</div>
       <div class="sel-desc">Te ayudo a ligar hombres</div>
       <div class="sel-tag">VERSIÓN FEMENINA</div>
@@ -493,21 +479,19 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 
   <aside class="sidebar">
     <div class="sb-header">
-      <a class="logo" onclick="goBack()">
-        <div class="landing-logo-icon">
-  <img id="landingKroby"
-     src="${isFemale ? 'kroby/krobyg.png' : 'kroby/kroby.png'}"
-     alt="Kroby">
-</div>
+      <a class="logo" id="logoLink">
+        <div class="logo-icon">
+          <img id="landingKroby" src="kroby/kroby.png" alt="Kroby">
+        </div>
         <span class="logo-name">kroby<em>.ia</em></span>
-        <span class="version-badge" id="vBadge">HOM</span>
+        <span class="version-badge" id="vBadge">CHICOS</span>
       </a>
-      <button class="icon-btn-sb" title="Nuevo chat" onclick="resetChat()">
+      <button class="icon-btn-sb" id="btnNewChatSb" title="Nuevo chat">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
       </button>
     </div>
 
-    <button class="new-chat-btn" onclick="resetChat()">
+    <button class="new-chat-btn" id="btnNewChat2">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
       Nuevo chat
     </button>
@@ -515,12 +499,12 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
     <div class="sb-spacer"></div>
 
     <div class="sb-footer">
-      <button class="back-btn" onclick="goBack()">
+      <button class="back-btn" id="btnBack">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Cambiar versión
       </button>
       <div class="user-row">
-       <img id="avLetter" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+        <img id="avLetter" class="avatar" src="" alt="Avatar">
         <div class="user-info">
           <div class="user-name" id="userName">Milton</div>
           <div class="user-plan">Plan gratuito</div>
@@ -531,18 +515,23 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 
   <main class="main">
     <div class="topbar">
+      <!-- Mobile back button -->
+      <button class="mobile-back" id="btnMobileBack">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      </button>
+
       <div class="model-pill" id="modelPill">
         <div class="dot-m" id="dot1"></div>
         <div class="dot-g" id="dot2"></div>
-        <span id="pillLabel">Kroby Hombres · GRATUITO</span>
+        <span id="pillLabel">Kroby Chicos · GRATUITO</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="topbar-actions">
         <button class="icon-btn-top">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
         </button>
-        <button class="icon-btn-top">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        <button class="icon-btn-top" id="btnNewChatTop">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
         </button>
       </div>
     </div>
@@ -555,22 +544,24 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
           class="composer-input" id="composerInput"
           placeholder="Escribe tu pregunta a Kroby IA..."
           rows="1"
-          onkeydown="handleKey(event)"
-          oninput="autoResize(this)"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="true"
         ></textarea>
         <div class="composer-footer">
           <div class="composer-tools">
-            <button class="tool-btn">
+            <button class="tool-btn" type="button">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               Adjuntar
             </button>
-            <button class="tool-btn">
+            <button class="tool-btn" type="button">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               Buscar
             </button>
           </div>
-          <button class="send-btn" onclick="sendMessage()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <!-- Send button: uses both touchend and click for max compatibility -->
+          <button class="send-btn" id="sendBtn" type="button" aria-label="Enviar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
       </div>
@@ -580,6 +571,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
 </div>
 
 <script>
+/* ── Respuestas ── */
 const MALE_CHIPS = ['✍️ Redactar contenido','📊 Analizar datos','💡 Ideas de negocio','🌐 Traducir texto','📧 Redactar email','📅 Planificar tareas'];
 const FEMALE_CHIPS = ['💌 Redactar mensaje','✨ Ideas creativas','💬 Consejos relacionales','📚 Recomendar lectura','🎯 Planificar metas','🌸 Bienestar personal'];
 
@@ -587,11 +579,7 @@ const MALE_RESPONSES = [
   `El plan Chill (Café y caminata)\nEs la opción con menos presión. Solo es caminar y platicar. Respondele:\n\n¡Todo bien también! Oye, el clima está perfecto para caminar un rato. ¿Te late si vamos a dar una vuelta al parque el sábado y pasamos por un café?`,
   `¿Tenés ya pensado a qué café la querés llevar, o querés que armemos un par de opciones chileras?`,
   `Tranquilo, respirá! Llegar antes es de caballeros y te da la ventaja de acomodarte bien. No te me vayas a poner ansioso ni a ver el celular cada tres segundos con cara de preocupación.`,
-  `Aquí tenés las 4 reglas de oro para que todo fluya:\n
-Escuchá más de lo que hablás: Hacé preguntas abiertas, mostrá interés real en sus respuestas y no conviertas la cita en un monólogo sobre vos.\n
-Sé el del plan: Llevá un lugar en mente y opciones claras. A las cheras les trama que un hombre tenga iniciativa y no ande con el "¿y ahora para dónde vamos?".\n
-Cero celular: Guardalo en el bolsillo. Estar viendo la pantalla cada cinco minutos mata cualquier conversación y transmite desinterés.\n
-Relajate y sé auténtico: No intentés interpretar un personaje ni impresionar de más. La confianza se nota cuando estás cómodo`,
+  `Aquí tenés las 4 reglas de oro para que todo fluya:\n\nEscuchá más de lo que hablás: Hacé preguntas abiertas, mostrá interés real en sus respuestas y no conviertas la cita en un monólogo sobre vos.\n\nSé el del plan: Llevá un lugar en mente y opciones claras. A las cheras les trama que un hombre tenga iniciativa y no ande con el "¿y ahora para dónde vamos?".\n\nCero celular: Guardalo en el bolsillo. Estar viendo la pantalla cada cinco minutos mata cualquier conversación y transmite desinterés.\n\nRelajate y sé auténtico: No intentés interpretar un personaje ni impresionar de más. La confianza se nota cuando estás cómodo.`,
   `¡Excelente pregunta! Para empezar suave (romper el hielo):\n\n• ¿Qué te gusta hacer cuando tienes tiempo libre?\n• ¿Eres más de planes tranquilos o de salir a lo loco?\n• ¿Qué tipo de música te gusta últimamente?\n• ¿Café o té?`,
   `Para que la conversación fluya dile:\n\n"¿Qué es algo que te apasiona tanto que podrías dar una charla de 20 minutos sin prepararte?"`,
   `Alcanzaste el límite diario de mensajes. Para continuar la conversación, adquiere la membresía Kroby asistente premium.`,
@@ -603,13 +591,19 @@ const FEMALE_RESPONSES = [
   `Si no quieres estar en la cita simplemente dile esto tal cual:\n  "Oye, qué pena contigo, pero me acaba de surgir una emergencia con mi familia y me tengo que ir ya. Perdón por cortar el plan así`,
 ];
 
+/* ── Estado ── */
 let mode = 'male';
 let msgCount = 0;
-const landing = document.getElementById('landing');
-const appEl = document.getElementById('app');
-const chatArea = document.getElementById('chatArea');
-const input = document.getElementById('composerInput');
+let isSending = false;
 
+/* ── Referencias DOM ── */
+const landing  = document.getElementById('landing');
+const appEl    = document.getElementById('app');
+const chatArea = document.getElementById('chatArea');
+const input    = document.getElementById('composerInput');
+const sendBtn  = document.getElementById('sendBtn');
+
+/* ── Entrar al chat ── */
 function enterChat(m) {
   mode = m;
   msgCount = 0;
@@ -621,43 +615,46 @@ function enterChat(m) {
   renderWelcome();
 }
 
+/* ── Tema ── */
 function applyTheme(m) {
-  const isFemale = m === 'female';
-  document.getElementById('vBadge').textContent = isFemale ? 'CHICAS' : 'CHICOS';
-  document.getElementById('pillLabel').textContent = isFemale ? 'Kroby Chicas · GRATUITO' : 'Kroby Chicos · GRATUITO';
-  const dot1 = document.getElementById('dot1');
-  const dot2 = document.getElementById('dot2');
-  dot1.className = isFemale ? 'dot-p' : 'dot-m';
-  dot2.className = isFemale ? 'dot-pk' : 'dot-g';
-  document.getElementById('userName').textContent =
-    isFemale ? 'Diana' : 'Milton';
-  const krobyImg = isFemale
-    ? 'kroby/krobyg.png'
-    : 'kroby/kroby.png';
-  document.querySelectorAll('#logoKroby, #landingKroby').forEach(img => {
-    img.src = krobyImg;
-  });
-  document.getElementById('avLetter').src = isFemale ? 'fotoperfil/Diana.jpeg' : 'fotoperfil/Milton.jpeg';
+  const f = m === 'female';
+  document.getElementById('vBadge').textContent    = f ? 'CHICAS' : 'CHICOS';
+  document.getElementById('pillLabel').textContent = f ? 'Kroby Chicas · GRATUITO' : 'Kroby Chicos · GRATUITO';
+  document.getElementById('dot1').className = f ? 'dot-p' : 'dot-m';
+  document.getElementById('dot2').className = f ? 'dot-pk' : 'dot-g';
+  document.getElementById('userName').textContent  = f ? 'Diana' : 'Milton';
+
+  const krobyImg = f ? 'kroby/krobyg.png' : 'kroby/kroby.png';
+  document.querySelectorAll('#logoKroby, #landingKroby').forEach(img => img.src = krobyImg);
+
+  // Fotos de perfil de los personajes
+  document.getElementById('avLetter').src = f ? 'fotoperfil/Diana.jpeg' : 'fotoperfil/Milton.jpeg';
 }
 
+/* ── Welcome ── */
 function renderWelcome() {
   chatArea.innerHTML = '';
-  const isFemale = mode === 'female';
-  const chips = isFemale ? FEMALE_CHIPS : MALE_CHIPS;
+  const f = mode === 'female';
+  const chips = f ? FEMALE_CHIPS : MALE_CHIPS;
   const welcome = document.createElement('div');
   welcome.className = 'welcome';
   welcome.id = 'welcome';
   welcome.innerHTML = `
-    <div class="landing-logo-icon"> <img id="landingKroby"
-     src="${isFemale ? 'kroby/krobyg.png' : 'kroby/kroby.png'}"
-     alt="Kroby"> </div>
-    <h1>${isFemale ? '¿En qué te apoyo hoy? 💜' : '¿En qué te ayudo hoy?'}</h1>
-    <p>${isFemale ? 'Soy Kroby IA, tu espacio seguro para ideas, consejos y todo lo que necesites.' : 'Soy Kroby IA, tu asistente inteligente para negocios, creatividad y productividad.'}</p>
-    <div class="chips">${chips.map(c => `<div class="chip" onclick="sendChip(this)">${c}</div>`).join('')}</div>
+    <div class="landing-logo-icon">
+      <img src="${f ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">
+    </div>
+    <h1>${f ? '¿En qué te apoyo hoy? 💜' : '¿En qué te ayudo hoy?'}</h1>
+    <p>${f ? 'Soy Kroby IA, tu espacio seguro para ideas, consejos y todo lo que necesites.' : 'Soy Kroby IA, tu asistente inteligente para negocios, creatividad y productividad.'}</p>
+    <div class="chips">${chips.map(c => `<div class="chip">${c}</div>`).join('')}</div>
   `;
+  // Chips con evento táctil
+  welcome.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => sendChip(chip));
+  });
   chatArea.appendChild(welcome);
 }
 
+/* ── Volver ── */
 function goBack() {
   appEl.style.display = 'none';
   landing.style.display = 'flex';
@@ -668,13 +665,36 @@ function goBack() {
 
 function resetChat() { msgCount = 0; renderWelcome(); }
 
+/* ── Input ── */
 function autoResize(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+/* ── Enviar ── */
+function sendMessage() {
+  const text = input.value.trim();
+  if (!text || isSending) return;
+  isSending = true;
+
+  const w = document.getElementById('welcome');
+  if (w) w.remove();
+
+  addMessage(text, 'user');
+  input.value = '';
+  input.style.height = 'auto';
+
+  const typingEl = addTyping();
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  setTimeout(() => {
+    typingEl.remove();
+    const responses = mode === 'female' ? FEMALE_RESPONSES : MALE_RESPONSES;
+    addMessage(responses[msgCount % responses.length], 'ai');
+    msgCount++;
+    isSending = false;
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }, 1100);
 }
 
 function sendChip(el) {
@@ -682,36 +702,24 @@ function sendChip(el) {
   sendMessage();
 }
 
-function sendMessage() {
-  const text = input.value.trim();
-  if (!text) return;
-  const w = document.getElementById('welcome');
-  if (w) w.remove();
-  addMessage(text, 'user');
-  input.value = '';
-  input.style.height = 'auto';
-  const typingEl = addTyping();
-  setTimeout(() => {
-    typingEl.remove();
-    const responses = mode === 'female' ? FEMALE_RESPONSES : MALE_RESPONSES;
-    addMessage(responses[msgCount % responses.length], 'ai');
-    msgCount++;
-  }, 1100);
-}
-
+/* ── Mensajes ── */
 function addMessage(text, role) {
+  const f = mode === 'female';
   const div = document.createElement('div');
   div.className = 'msg ' + role;
+
   const av = document.createElement('div');
   av.className = 'msg-av';
   if (role === 'ai') {
-  av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
-} else {
-  av.innerHTML = `<img src="${mode === 'female' ? 'fotoperfil/Diana.jpeg' : 'fotoperfil/Milton.jpeg'}" alt="Usuario" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-}
+    av.innerHTML = `<img src="${f ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
+  } else {
+    av.innerHTML = `<img src="${f ? 'fotoperfil/Diana.jpeg' : 'fotoperfil/Milton.jpeg'}" alt="Usuario">`;
+  }
+
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
   bubble.textContent = text;
+
   div.appendChild(av);
   div.appendChild(bubble);
   chatArea.appendChild(div);
@@ -719,20 +727,58 @@ function addMessage(text, role) {
 }
 
 function addTyping() {
+  const f = mode === 'female';
   const div = document.createElement('div');
   div.className = 'msg ai';
   const av = document.createElement('div');
   av.className = 'msg-av';
-  av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
+  av.innerHTML = `<img src="${f ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
   bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
   div.appendChild(av);
   div.appendChild(bubble);
   chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
   return div;
 }
+
+/* ══════════════════════════════════════
+   EVENTOS — separados de HTML para mejor
+   compatibilidad móvil
+══════════════════════════════════════ */
+
+// Landing cards
+document.getElementById('btnMale').addEventListener('click', () => enterChat('male'));
+document.getElementById('btnFemale').addEventListener('click', () => enterChat('female'));
+
+// Send button — touchend previene el delay de 300ms en iOS/Android
+sendBtn.addEventListener('touchend', function(e) {
+  e.preventDefault(); // evita el click fantasma posterior
+  sendMessage();
+});
+sendBtn.addEventListener('click', sendMessage);
+
+// Textarea — Enter envía, Shift+Enter hace salto de línea
+input.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+input.addEventListener('input', function() { autoResize(this); });
+
+// Botones de navegación
+document.getElementById('btnBack').addEventListener('click', goBack);
+document.getElementById('btnMobileBack').addEventListener('click', goBack);
+document.getElementById('logoLink').addEventListener('click', goBack);
+document.getElementById('btnNewChatSb').addEventListener('click', resetChat);
+document.getElementById('btnNewChat2').addEventListener('click', resetChat);
+document.getElementById('btnNewChatTop').addEventListener('click', resetChat);
+
+// Scroll automático cuando aparece el teclado en móvil
+input.addEventListener('focus', function() {
+  setTimeout(() => { chatArea.scrollTop = chatArea.scrollHeight; }, 350);
+});
 </script>
 </body>
 </html>
