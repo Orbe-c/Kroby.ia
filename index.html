@@ -520,7 +520,7 @@ html,body{height:100%;font-family:var(--font-body);background:var(--beige-50);co
         Cambiar versión
       </button>
       <div class="user-row">
-        <div class="avatar" id="avLetter">R</div>
+       <img id="avLetter" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
         <div class="user-info">
           <div class="user-name" id="userName">Milton</div>
           <div class="user-plan">Plan gratuito</div>
@@ -624,26 +624,21 @@ function enterChat(m) {
 
 function applyTheme(m) {
   const isFemale = m === 'female';
-
   document.getElementById('vBadge').textContent = isFemale ? 'CHICAS' : 'CHICOS';
   document.getElementById('pillLabel').textContent = isFemale ? 'Kroby Chicas · GRATUITO' : 'Kroby Chicos · GRATUITO';
-
   const dot1 = document.getElementById('dot1');
   const dot2 = document.getElementById('dot2');
-
   dot1.className = isFemale ? 'dot-p' : 'dot-m';
   dot2.className = isFemale ? 'dot-pk' : 'dot-g';
-
   document.getElementById('userName').textContent =
     isFemale ? 'Diana' : 'Milton';
-
   const krobyImg = isFemale
     ? 'kroby/krobyg.png'
     : 'kroby/kroby.png';
-
   document.querySelectorAll('#logoKroby, #landingKroby').forEach(img => {
     img.src = krobyImg;
   });
+  document.getElementById('avLetter').src = isFemale ? 'RUTA_DIANA' : 'RUTA_MILTON';
 }
 
 function renderWelcome() {
@@ -713,7 +708,7 @@ function addMessage(text, role) {
   if (role === 'ai') {
   av.innerHTML = `<img src="${mode === 'female' ? 'kroby/krobyg.png' : 'kroby/kroby.png'}" alt="Kroby">`;
 } else {
-  av.textContent = 'R';
+  av.innerHTML = `<img src="${mode === 'female' ? 'RUTA_DIANA' : 'RUTA_MILTON'}" alt="Usuario" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
 }
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
